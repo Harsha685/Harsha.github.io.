@@ -1304,36 +1304,42 @@
 
                         <div class="space-y-6 font-code-sm">
                             <div
-                                class="flex items-center gap-4 group cursor-pointer magnetic-btn p-2 -mx-2 hover:bg-surface-container transition-colors">
+                                class="flex flex-wrap sm:flex-nowrap items-center gap-4 p-2 -mx-2 hover:bg-surface-container transition-colors">
                                 <span class="material-symbols-outlined text-primary">mail</span>
-                                <div>
+                                <div class="min-w-0 flex-1">
                                     <div class="text-[10px] text-outline uppercase">EMAIL_ADDR</div>
-                                    <div class="text-primary group-hover:text-secondary transition-colors">
-                                        harshavardhanchelluri@gmail.com</div>
+                                    <a href="mailto:harshavardhanchelluri@gmail.com"
+                                        class="text-primary underline decoration-dotted underline-offset-4 hover:decoration-solid break-all select-text">harshavardhanchelluri@gmail.com</a>
                                 </div>
+                                <button type="button" data-copy="harshavardhanchelluri@gmail.com" aria-label="Copy email addr"
+                                    class="copy-btn shrink-0 border border-outline px-3 py-1 text-[11px] uppercase tracking-widest text-on-surface hover:bg-primary hover:text-on-primary transition-colors">COPY</button>
                             </div>
 
                             <div
-                                class="flex items-center gap-4 group cursor-pointer magnetic-btn p-2 -mx-2 hover:bg-surface-container transition-colors">
+                                class="flex flex-wrap sm:flex-nowrap items-center gap-4 p-2 -mx-2 hover:bg-surface-container transition-colors">
                                 <span class="material-symbols-outlined text-primary">code</span>
-                                <div>
-                                    <div class="text-[10px] text-outline uppercase">GITHUB_REPO</div>
-                                    <div class="text-primary group-hover:text-secondary transition-colors">
-                                        github.com/Harsha685</div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="text-[10px] text-outline uppercase">GITHUB_PROFILE</div>
+                                    <a href="https://github.com/Harsha685" target="_blank" rel="noopener"
+                                        class="text-primary underline decoration-dotted underline-offset-4 hover:decoration-solid break-all select-text">github.com/Harsha685</a>
                                 </div>
+                                <button type="button" data-copy="https://github.com/Harsha685" aria-label="Copy github profile"
+                                    class="copy-btn shrink-0 border border-outline px-3 py-1 text-[11px] uppercase tracking-widest text-on-surface hover:bg-primary hover:text-on-primary transition-colors">COPY</button>
                             </div>
 
                             <div
-                                class="flex items-center gap-4 group cursor-pointer magnetic-btn p-2 -mx-2 hover:bg-surface-container transition-colors">
+                                class="flex flex-wrap sm:flex-nowrap items-center gap-4 p-2 -mx-2 hover:bg-surface-container transition-colors">
                                 <span class="material-symbols-outlined text-primary">link</span>
-                                <div>
+                                <div class="min-w-0 flex-1">
                                     <div class="text-[10px] text-outline uppercase">LINKEDIN_PROFILE</div>
-                                    <div class="text-primary group-hover:text-secondary transition-colors">
-                                        linkedin.com/in/harshavardhan-chelluri-77194b382</div>
+                                    <a href="https://www.linkedin.com/in/harshavardhan-chelluri-77194b382" target="_blank" rel="noopener"
+                                        class="text-primary underline decoration-dotted underline-offset-4 hover:decoration-solid break-all select-text">linkedin.com/in/harshavardhan-chelluri-77194b382</a>
                                 </div>
+                                <button type="button" data-copy="https://www.linkedin.com/in/harshavardhan-chelluri-77194b382" aria-label="Copy linkedin profile"
+                                    class="copy-btn shrink-0 border border-outline px-3 py-1 text-[11px] uppercase tracking-widest text-on-surface hover:bg-primary hover:text-on-primary transition-colors">COPY</button>
                             </div>
                             <div
-                                class="flex items-center gap-4 group magnetic-btn p-2 -mx-2 hover:bg-surface-container transition-colors">
+                                class="flex items-center gap-4 p-2 -mx-2 hover:bg-surface-container transition-colors">
                                 <span class="material-symbols-outlined text-primary">work</span>
                                 <div>
                                     <div class="text-[10px] text-outline uppercase">CURRENT_ROLE</div>
@@ -1524,7 +1530,9 @@
 
             navLinks.forEach(link => {
                 link.classList.remove('bg-primary', 'text-on-primary', 'font-bold', 'border-r-2', 'border-l-2', 'border-primary');
+                link.classList.add('text-on-surface');
                 if (link.dataset.section === current) {
+                    link.classList.remove('text-on-surface');
                     link.classList.add('bg-primary', 'text-on-primary', 'font-bold', 'border-r-2', 'border-l-2', 'border-primary');
                 }
             });
@@ -1711,6 +1719,36 @@
             <img id="imgLightboxImg" class="w-full h-auto max-h-[85vh] object-contain bg-surface-container-lowest" alt="" />
         </div>
     </div>
+    <script>
+        // Copy buttons in OPEN_CHANNEL
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const text = btn.dataset.copy;
+                try {
+                    await navigator.clipboard.writeText(text);
+                } catch (e) {
+                    // fallback for browsers without clipboard API access
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    ta.remove();
+                }
+                btn.textContent = 'COPIED \u2713';
+                btn.classList.remove('text-on-surface');
+                btn.classList.add('bg-primary', 'text-on-primary');
+                clearTimeout(btn._t);
+                btn._t = setTimeout(() => {
+                    btn.textContent = 'COPY';
+                    btn.classList.remove('bg-primary', 'text-on-primary');
+                    btn.classList.add('text-on-surface');
+                }, 1500);
+            });
+        });
+    </script>
     <script>
         (function () {
             const box = document.getElementById('imgLightbox');
